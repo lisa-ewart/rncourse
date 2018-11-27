@@ -9,6 +9,8 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, TextInput, Button, TouchableOpacity} from 'react-native';
 
+import ListItem from './src/components/ListItem.js';
+import {Icon} from 'native-base';
 
 export default class App extends Component<Props> {
   
@@ -21,6 +23,11 @@ placeNameChangedHandler = val => {
   this.setState({
     placeName: val
   });
+}
+
+removeItem(e) {
+    let filteredArray = this.state.places.filter(item => item !== e.target.value)
+    this.setState({places: filteredArray});
 }
 
 placeSubmitHandler =  () => {
@@ -37,7 +44,9 @@ placeSubmitHandler =  () => {
 
   render() {
     const placesOutput = this.state.places.map((place, i) => (
-        <Text key={i} style={styles.listItem}>{i + 1}. {place}</Text>
+      <View>
+        <ListItem key={i} placeName={place}/>   
+      </View>
       ));
     return (
       <View style={styles.container}>
@@ -51,10 +60,14 @@ placeSubmitHandler =  () => {
           <Button 
             title="Add" 
             style={styles.placeButton}
+            color="#841584"
             onPress={this.placeSubmitHandler}
           />
         </View>
-        <View>{placesOutput}</View>
+        <View style={styles.listContainer}>
+        {placesOutput}
+        </View>
+        
       </View>
     );
   }
@@ -79,7 +92,8 @@ const styles = StyleSheet.create({
     width: "70%"
   },
   placeButton:{
-    width:"30%"
+    width:"30%",
+    color:'green'
   },
   buttonInput: {
     color: '#00aeef',
@@ -89,6 +103,12 @@ const styles = StyleSheet.create({
   },
   listItem:{
     color:"green"
+  },
+  listContainer:{
+    width:"100%",
   }
   
 });
+
+
+// <Text key={i} style={styles.listItem}>{i + 1}. {place}</Text>
